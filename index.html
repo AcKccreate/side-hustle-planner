@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Side Hustle Planner — AI-Powered | AnchorWithin</title>
+<meta name="description" content="Get a personalized side hustle plan in 30 seconds. Free AI-powered planner by AnchorWithin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0D0F;
+  --surface: #131517;
+  --surface-up: #1A1C20;
+  --surface-hi: #22252A;
+  --border: rgba(255,255,255,0.06);
+  --border-mint: rgba(98,240,178,0.18);
+  --mint: #62F0B2;
+  --mint-bright: #80FFD0;
+  --mint-dim: #2F8C62;
+  --mint-glow: rgba(98,240,178,0.08);
+  --orange: #FFB066;
+  --orange-glow: rgba(255,176,102,0.08);
+  --text: #EAEAE8;
+  --text-mid: #A0A09C;
+  --text-dim: #5A5A56;
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --r: 14px;
+  --r-sm: 10px;
+  --r-xs: 6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── Grid BG ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(98,240,178,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(98,240,178,0.015) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;z-index:0;
+}
+
+/* ── Header ── */
+.hdr{
+  text-align:center;
+  padding:36px 20px 12px;
+  position:relative;z-index:2;
+}
+.hdr-brand{
+  font-family:var(--font-body);font-size:0.62rem;font-weight:700;
+  letter-spacing:5px;text-transform:uppercase;
+  color:var(--mint);margin-bottom:14px;
+  opacity:0;animation:up .6s .1s ease both;
+}
+.hdr h1{
+  font-family:var(--font-display);
+  font-size:clamp(1.7rem,6vw,2.5rem);
+  font-weight:800;color:var(--text);
+  line-height:1.1;letter-spacing:-0.5px;
+  opacity:0;animation:up .6s .18s ease both;
+}
+.hdr h1 .accent{color:var(--mint)}
+.hdr .tag{
+  margin-top:8px;font-size:.85rem;font-weight:300;
+  color:var(--text-mid);
+  opacity:0;animation:up .6s .3s ease both;
+}
+@keyframes up{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── Wrap ── */
+.wrap{
+  max-width:500px;margin:0 auto;
+  padding:12px 16px 100px;
+  position:relative;z-index:2;
+}
+
+/* ── Card ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:20px 18px;
+  margin-bottom:12px;
+  opacity:0;animation:up .5s ease both;
+}
+.card.d1{animation-delay:.35s}
+.card.d2{animation-delay:.42s}
+.card.d3{animation-delay:.5s}
+.card.d4{animation-delay:.58s}
+
+.card-label{
+  font-family:var(--font-display);
+  font-size:.68rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Category Chips ── */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{
+  padding:8px 16px;
+  background:var(--surface-up);
+  border:1px solid var(--border);
+  border-radius:50px;
+  font-family:var(--font-body);font-size:.82rem;font-weight:500;
+  color:var(--text-mid);cursor:pointer;
+  transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.chip:hover{background:var(--surface-hi);color:var(--text)}
+.chip.active{
+  background:var(--mint-glow);
+  border-color:var(--mint-dim);
+  color:var(--mint);
+}
+.chip .emoji{margin-right:4px}
+
+/* ── Input ── */
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field label{
+  display:block;font-size:.76rem;font-weight:500;
+  color:var(--text-mid);margin-bottom:6px;
+}
+.field textarea,.field input,.field select{
+  width:100%;padding:13px 14px;
+  background:var(--surface-up);
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  color:var(--text);
+  font-family:var(--font-body);font-size:.92rem;font-weight:400;
+  outline:none;transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;
+}
+.field textarea{resize:vertical;min-height:60px;line-height:1.5}
+.field textarea:focus,.field input:focus,.field select:focus{
+  border-color:var(--mint-dim);
+  box-shadow:0 0 0 3px var(--mint-glow);
+}
+.field textarea::placeholder,.field input::placeholder{color:var(--text-dim)}
+.field select{cursor:pointer}
+.field select option{background:var(--surface-up);color:var(--text)}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 28px;border:none;border-radius:var(--r-sm);
+  font-family:var(--font-body);font-size:.88rem;font-weight:700;
+  cursor:pointer;transition:all .2s;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-mint{background:var(--mint);color:var(--bg)}
+.btn-mint:hover{background:var(--mint-bright);transform:translateY(-1px);box-shadow:0 8px 30px rgba(98,240,178,.2)}
+.btn-mint:active{transform:scale(.98)}
+.btn-ghost{background:transparent;border:1px solid var(--mint-dim);color:var(--mint)}
+.btn-ghost:hover{background:var(--mint-glow)}
+.btn-orange{background:var(--orange);color:var(--bg)}
+.btn-orange:hover{box-shadow:0 6px 20px rgba(255,176,102,.2);transform:translateY(-1px)}
+.btn-wide{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+/* ── Results ── */
+.results-area{display:none}
+.results-area.show{display:block}
+
+.hustle-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:20px 18px;
+  margin-bottom:10px;
+  transition:border-color .2s;
+}
+.hustle-card:hover{border-color:var(--border-mint)}
+
+.hustle-num{
+  font-family:var(--font-display);
+  font-size:.62rem;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--mint);margin-bottom:6px;
+}
+.hustle-title{
+  font-family:var(--font-display);
+  font-size:1.2rem;font-weight:700;
+  color:var(--text);margin-bottom:8px;
+  line-height:1.25;
+}
+.hustle-desc{
+  font-size:.84rem;color:var(--text-mid);
+  line-height:1.6;margin-bottom:12px;
+}
+.hustle-steps{list-style:none;margin-bottom:12px}
+.hustle-steps li{
+  display:flex;gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid var(--border);
+  font-size:.84rem;color:var(--text);
+  line-height:1.5;
+}
+.hustle-steps li:last-child{border:none}
+.step-num{
+  flex-shrink:0;width:24px;height:24px;
+  background:var(--mint-glow);
+  border:1px solid var(--border-mint);
+  border-radius:6px;
+  display:grid;place-items:center;
+  font-family:var(--font-display);font-size:.72rem;font-weight:700;
+  color:var(--mint);
+}
+.hustle-meta{
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.meta-tag{
+  padding:4px 10px;
+  background:var(--surface-up);
+  border-radius:50px;
+  font-size:.7rem;font-weight:600;
+  color:var(--text-dim);
+}
+.meta-tag.earn{color:var(--mint);background:var(--mint-glow)}
+.meta-tag.time{color:var(--orange);background:var(--orange-glow)}
+
+/* ── Premium Gate ── */
+.gate{
+  position:relative;border-radius:var(--r);
+  overflow:hidden;margin-bottom:12px;
+  opacity:0;animation:up .5s .6s ease both;
+}
+.gate-lock{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:28px;
+  background:rgba(12,13,15,.88);
+  backdrop-filter:blur(10px);
+  transition:opacity .4s,visibility .4s;
+}
+.gate.open .gate-lock{opacity:0;visibility:hidden;pointer-events:none}
+.gate-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;
+  background:rgba(98,240,178,.06);
+  border:1px solid rgba(98,240,178,.15);
+  border-radius:50px;
+  font-size:.68rem;font-weight:700;
+  color:var(--mint);letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.gate-lock h3{
+  font-family:var(--font-display);font-size:1.25rem;font-weight:700;
+  color:var(--text);margin-bottom:6px;
+}
+.gate-lock p{
+  font-size:.8rem;color:var(--text-mid);
+  max-width:280px;margin-bottom:16px;
+  line-height:1.55;font-weight:300;
+}
+.gate-lock .pn{font-size:.68rem;color:var(--text-dim);margin-top:8px}
+.gate-content{
+  background:var(--surface);
+  border:1px solid var(--border-mint);
+  border-radius:var(--r);
+  padding:22px 18px;
+  filter:blur(4px);transition:filter .4s;
+}
+.gate.open .gate-content{filter:none}
+
+/* ── Pro Output Blocks ── */
+.pro-block{
+  margin-bottom:14px;padding:16px;
+  background:var(--surface-up);
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+}
+.pro-block-title{
+  font-family:var(--font-display);
+  font-size:.78rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--mint);margin-bottom:10px;
+}
+.pro-block p,.pro-block li{
+  font-size:.84rem;color:var(--text-mid);line-height:1.65;
+}
+.pro-block ul{list-style:none;padding:0}
+.pro-block ul li{
+  padding:4px 0;
+  padding-left:16px;
+  position:relative;
+}
+.pro-block ul li::before{
+  content:'';position:absolute;left:0;top:12px;
+  width:6px;height:6px;background:var(--mint-dim);
+  border-radius:50%;
+}
+.checklist li{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:6px 0!important;padding-left:0!important;
+}
+.checklist li::before{display:none!important}
+.chk{
+  flex-shrink:0;width:20px;height:20px;
+  border:1.5px solid var(--text-dim);
+  border-radius:5px;cursor:pointer;
+  display:grid;place-items:center;
+  transition:all .2s;font-size:.65rem;color:transparent;
+  margin-top:1px;
+}
+.chk.done{background:var(--mint);border-color:var(--mint);color:var(--bg)}
+
+/* ── Share ── */
+.share-row{
+  display:flex;gap:8px;margin-top:12px;
+}
+.share-row .btn{flex:1;font-size:.82rem;padding:11px 14px}
+
+/* ── Support ── */
+.support-area{
+  text-align:center;padding:24px 16px 0;
+  opacity:0;animation:up .5s .75s ease both;
+}
+.support-area .sep{
+  width:32px;height:2px;background:var(--mint-dim);
+  margin:0 auto 18px;border-radius:2px;
+}
+.support-area p{font-size:.76rem;color:var(--text-dim);margin-bottom:12px;font-weight:300;line-height:1.6}
+.support-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 24px;
+  background:linear-gradient(135deg,#FF6B6B,#C850C0);
+  color:#fff;text-decoration:none;
+  border-radius:50px;font-weight:700;font-size:.82rem;
+  transition:transform .2s,box-shadow .2s;
+}
+.support-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(200,80,192,.2)}
+
+.legal{
+  text-align:center;padding:24px 16px 40px;
+  font-size:.65rem;color:var(--text-dim);line-height:1.7;
+}
+.legal a{color:var(--mint-dim);text-decoration:none}
+
+.spin{
+  display:inline-block;width:14px;height:14px;
+  border:2px solid var(--border);border-top-color:var(--mint);
+  border-radius:50%;animation:sp .6s linear infinite;
+  vertical-align:middle;margin-right:4px;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.hidden{display:none!important}
+
+@media(max-width:380px){
+  .chips{gap:6px}
+  .chip{padding:6px 12px;font-size:.78rem}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">AnchorWithin</div>
+  <h1>Side Hustle <span class="accent">Planner</span></h1>
+  <p class="tag">AI-powered action plans &middot; Start earning tonight</p>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══ CATEGORY SELECT ═══ -->
+  <div class="card d1">
+    <div class="card-label">Pick Your Lane</div>
+    <div class="chips" id="chips">
+      <button class="chip" data-cat="tech"><span class="emoji">&#128187;</span>Tech</button>
+      <button class="chip" data-cat="creative"><span class="emoji">&#127912;</span>Creative</button>
+      <button class="chip" data-cat="service"><span class="emoji">&#129309;</span>Service</button>
+      <button class="chip" data-cat="finance"><span class="emoji">&#128200;</span>Finance</button>
+      <button class="chip" data-cat="content"><span class="emoji">&#127908;</span>Content</button>
+      <button class="chip" data-cat="physical"><span class="emoji">&#128170;</span>Physical</button>
+    </div>
+  </div>
+
+  <!-- ═══ INPUT ═══ -->
+  <div class="card d2">
+    <div class="card-label">About You</div>
+    <div class="field">
+      <label>Skills &amp; Interests</label>
+      <textarea id="skillsInput" placeholder="e.g. graphic design, Python, cooking, social media, photography..."></textarea>
+    </div>
+    <div class="field">
+      <label>Weekly Hours Available</label>
+      <select id="hoursSelect">
+        <option value="5">5 hours or less</option>
+        <option value="10" selected>5–10 hours</option>
+        <option value="20">10–20 hours</option>
+        <option value="30">20–30 hours</option>
+        <option value="40">Full-time 30+</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Startup Budget</label>
+      <select id="budgetSelect">
+        <option value="0" selected>$0 — Zero budget</option>
+        <option value="100">Under $100</option>
+        <option value="500">$100–$500</option>
+        <option value="1000">$500+</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ═══ GENERATE ═══ -->
+  <div class="card d3">
+    <button class="btn btn-mint btn-wide" id="genBtn" onclick="generate()">&#9889;&ensp;Generate My Plan</button>
+  </div>
+
+  <!-- ═══ FREE RESULTS ═══ -->
+  <div class="results-area" id="freeResults"></div>
+
+  <!-- ═══ SHARE ROW ═══ -->
+  <div class="results-area share-row" id="shareRow">
+    <button class="btn btn-ghost" onclick="shareIt()">&#128279;&ensp;Share This Tool</button>
+    <button class="btn btn-ghost" onclick="generate()">&#10227;&ensp;New Ideas</button>
+  </div>
+
+  <!-- ═══ PREMIUM GATE ═══ -->
+  <div class="gate" id="proGate">
+    <div class="gate-lock">
+      <div class="gate-badge">&#9889; Pro Planner</div>
+      <h3>Full Action Plans</h3>
+      <p>Detailed week-by-week roadmap, daily checklist, tools &amp; templates, resume builder — for every hustle.</p>
+      <button class="btn btn-mint" onclick="unlockPro()">Unlock for $2.99</button>
+      <div class="pn">One-time purchase &middot; All hustles included</div>
+    </div>
+    <div class="gate-content" id="proContent">
+      <div class="card-label">Full Plan</div>
+      <p style="font-size:.84rem;color:var(--text-mid);margin-bottom:12px;font-weight:300">
+        Generate ideas above first, then unlock for complete action plans.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ SUPPORT ═══ -->
+  <div class="support-area">
+    <div class="sep"></div>
+    <p>Free side-hustle tools from AnchorWithin.<br>If this helped you take the first step, consider fueling the next tool.</p>
+    <a href="https://ko-fi.com/anchorwithin" target="_blank" rel="noopener" class="support-btn">&#9749; Support AnchorWithin</a>
+  </div>
+
+  <div class="legal">
+    &copy; 2026 AnchorWithin LLC &bull; For inspiration and planning purposes.<br>
+    <a href="https://youtube.com/@AnchorWithin">YouTube</a> &middot;
+    <a href="https://ko-fi.com/anchorwithin">Ko-fi</a> &middot;
+    <a href="https://gumroad.com/anchorwithin">Gumroad</a>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   SIDE HUSTLE DATABASE
+   ═══════════════════════════════════════ */
+const DB = {
+tech: [
+  { title:'Freelance Web Developer', desc:'Build websites for local businesses using no-code tools or basic HTML/CSS. Small businesses pay $500–$3,000 per site.',
+    steps:['Learn one stack deeply (WordPress, Webflow, or HTML/CSS)','Build 3 portfolio sites for free or cheap for friends/local orgs','Post on Fiverr + cold-email 10 local businesses per week'],
+    earn:'$500–$3K/project', time:'10–15 hrs/wk', tools:['Webflow','VS Code','Fiverr'],
+    plan:'Week 1-2: Complete one Webflow/WordPress tutorial and build your own portfolio site. Week 3-4: Build 2-3 free sites for friends or local nonprofits. Week 5-6: Create Fiverr gig + Upwork profile. Week 7-8: Cold email 50 local businesses. Month 3+: Raise rates, add recurring maintenance plans ($99/mo).',
+    checklist:['Complete platform tutorial','Build personal portfolio site','Create 3 sample projects','Set up Fiverr profile','Set up Upwork profile','Write cold email template','Send first 10 outreach emails','Land first paid client','Set up invoicing (Stripe/PayPal)','Create maintenance plan offering'],
+    templateEmail:'Subject: Quick question about [BUSINESS] website\n\nHi [NAME],\n\nI noticed [BUSINESS] could benefit from [specific improvement — mobile optimization, faster loading, modern design]. I specialize in building clean, fast websites for local businesses.\n\nWould you be open to a free 10-minute audit? No strings attached.\n\nBest,\n[YOUR NAME]\n[PORTFOLIO URL]' },
+  { title:'AI Automation Consultant', desc:'Help small businesses automate repetitive tasks using tools like Zapier, Make, and ChatGPT. Charge per workflow or monthly retainer.',
+    steps:['Learn Zapier/Make + ChatGPT API basics (free tiers available)','Document 5 common automations (email sorting, social posting, invoicing)','Offer free automation audit to 3 businesses, then pitch paid implementation'],
+    earn:'$200–$2K/project', time:'5–10 hrs/wk', tools:['Zapier','Make','ChatGPT'],
+    plan:'Week 1: Master Zapier free tier — build 5 personal automations. Week 2: Learn Make.com basics + ChatGPT API. Week 3-4: Document case studies. Week 5+: Outreach to small businesses, offer free audits, convert to paid clients at $500-2000/implementation.',
+    checklist:['Create Zapier account','Build 5 sample automations','Learn Make.com basics','Document automation case studies','Create service offering page','Reach out to 5 businesses for free audits','Complete first free audit','Convert audit to paid project','Set up recurring retainer template','Join automation freelancer communities'],
+    templateEmail:'Subject: Save 10+ hours/week with simple automation\n\nHi [NAME],\n\nI help businesses like [BUSINESS] automate repetitive tasks — things like email follow-ups, social media posting, invoice reminders, and data entry.\n\nMost of my clients save 10-15 hours per week. I\'d love to do a free 15-minute automation audit for you.\n\nInterested?\n\n[YOUR NAME]' },
+  { title:'No-Code App Builder', desc:'Build simple apps and tools for clients using Bubble, Glide, or Softr. Perfect for MVPs and internal tools.',
+    steps:['Complete Bubble.io or Glide beginner course (free)','Build 2 demo apps (booking system + inventory tracker)','Market on Twitter/LinkedIn with before/after screenshots'],
+    earn:'$1K–$5K/project', time:'15–20 hrs/wk', tools:['Bubble.io','Glide','Softr'],
+    plan:'Week 1-2: Complete Bubble.io bootcamp. Week 3-4: Build a booking app + inventory tool. Month 2: Launch portfolio, post builds on Twitter. Month 3+: Pitch startups needing MVPs, charge $1-5K per app.',
+    checklist:['Complete Bubble.io tutorial','Build demo booking app','Build demo inventory tracker','Create portfolio page','Post 5 builds on Twitter/LinkedIn','Join no-code communities','Respond to 10 project requests','Land first paid project','Deliver and get testimonial','Create referral incentive'],
+    templateEmail:'Subject: Need an app built fast?\n\nHi [NAME],\n\nI build custom apps without code — booking systems, dashboards, internal tools, MVPs — typically in 2-4 weeks at a fraction of traditional dev costs.\n\nHere are two recent builds: [LINK 1] [LINK 2]\n\nWould love to chat about what you need.\n\n[YOUR NAME]' },
+],
+creative: [
+  { title:'Sell Digital Templates', desc:'Design Canva templates, Notion dashboards, or spreadsheet systems. Sell on Gumroad or Etsy for passive income.',
+    steps:['Pick one niche (social media templates, budget trackers, wedding planners)','Create a pack of 10 templates in Canva or Notion','List on Gumroad + Etsy with SEO-optimized descriptions'],
+    earn:'$200–$2K/mo passive', time:'5–10 hrs/wk', tools:['Canva','Notion','Gumroad'],
+    plan:'Week 1: Research top-selling template niches on Etsy. Week 2-3: Design 10-template pack in Canva. Week 4: Create Gumroad + Etsy listings with mockups. Month 2: Promote via Pinterest + TikTok. Month 3+: Add new packs monthly, build email list.',
+    checklist:['Research template niches on Etsy','Choose niche and audience','Design 10 templates','Create product mockups','Set up Gumroad store','List on Etsy','Create Pinterest account','Pin 10 template previews','Post TikTok showing template usage','Set up email capture for buyers'],
+    templateEmail:'N/A — focus on SEO product descriptions:\n\n[TEMPLATE TITLE] — [Niche] Template Pack\n\n✅ [Number] professionally designed templates\n✅ Fully editable in Canva (free account works)\n✅ Instant download\n✅ Commercial license included\n\nPerfect for [target audience]. Save hours of design time.' },
+  { title:'Freelance Video Editor', desc:'Edit YouTube videos, Reels, and TikToks for creators and businesses. High demand, repeatable work.',
+    steps:['Learn CapCut or DaVinci Resolve (both free)','Edit 3 sample videos in trending styles (fast cuts, captions, hooks)','DM 20 small YouTubers offering to edit their next video free'],
+    earn:'$100–$500/video', time:'10–15 hrs/wk', tools:['CapCut','DaVinci Resolve','Canva'],
+    plan:'Week 1: Master CapCut with 3 practice edits. Week 2: Create portfolio reel. Week 3-4: DM 30 creators, offer 1 free edit. Month 2+: Convert free clients to paid ($100-500/video), build recurring relationships.',
+    checklist:['Download CapCut or DaVinci Resolve','Complete editing tutorial','Edit 3 sample videos','Create portfolio reel','Identify 30 small creators to pitch','Send first 10 DMs','Complete first free edit','Get testimonial','Set pricing tiers','Land first paid recurring client'],
+    templateEmail:'Subject: Free video edit for your channel\n\nHey [CREATOR NAME],\n\nLove your content on [specific video]. I\'m a video editor looking to build my portfolio and I\'d love to edit your next video for free — no strings.\n\nHere\'s my reel: [LINK]\n\nInterested?\n\n[YOUR NAME]' },
+  { title:'Print-on-Demand Store', desc:'Design graphics for t-shirts, mugs, and posters. Sell through Redbubble, TeeSpring, or Merch by Amazon with zero inventory.',
+    steps:['Create 20 designs in Canva around trending niches','Upload to Redbubble + TeeSpring (free to list)','Drive traffic with Pinterest boards and TikTok showcase videos'],
+    earn:'$100–$1K/mo passive', time:'5–8 hrs/wk', tools:['Canva','Redbubble','Pinterest'],
+    plan:'Week 1: Research trending POD niches (humor, pets, occupations). Week 2-3: Design 20 graphics. Week 4: Upload to Redbubble + TeeSpring. Month 2: Create Pinterest boards + TikTok showcase. Month 3+: Add 10 new designs weekly, optimize bestsellers.',
+    checklist:['Research trending POD niches','Create Canva design workspace','Design first 10 graphics','Design next 10 graphics','Create Redbubble account','Upload all designs','Create TeeSpring account','Set up Pinterest boards','Post first TikTok showcase','Track sales and double down on winners'],
+    templateEmail:'N/A — focus on social captions:\n\n🎨 New drop! [DESIGN NAME]\nAvailable on tees, mugs, stickers & more\n🔗 Link in bio\n\n#PrintOnDemand #[Niche]Life #ShopSmall' },
+],
+service: [
+  { title:'Virtual Assistant', desc:'Handle email, scheduling, data entry, and social media for busy professionals. Start on Fiverr or cold-pitch on LinkedIn.',
+    steps:['List your organizational skills and tools you know (Google Suite, Notion, etc.)','Create a Fiverr gig for VA services at $15–25/hr starting rate','Apply to 5 VA job posts on Upwork daily for 2 weeks'],
+    earn:'$15–$40/hr', time:'10–20 hrs/wk', tools:['Google Workspace','Notion','Calendly'],
+    plan:'Week 1: Catalog all admin skills. Create service menu. Week 2: Launch Fiverr + Upwork profiles. Week 3-4: Apply to 10 jobs daily. Month 2: Specialize in one niche (real estate VAs, podcast VAs, etc.) to charge premium rates.',
+    checklist:['List all admin/organizational skills','Create service menu with pricing','Set up Fiverr VA gig','Set up Upwork profile','Apply to 10 jobs','Complete first project','Get 5-star review','Choose a specialization niche','Raise rates by 25%','Pitch 5 clients directly on LinkedIn'],
+    templateEmail:'Subject: Virtual assistant — free trial hour\n\nHi [NAME],\n\nI noticed you\'re growing [BUSINESS/BRAND] fast. I\'m a virtual assistant specializing in [email management / social media / scheduling] and I\'d love to offer you a free trial hour.\n\nI can handle [specific task] so you can focus on [their core work].\n\nWant to try it out?\n\n[YOUR NAME]' },
+  { title:'Local Service Arbitrage', desc:'Book cleaning, lawn care, or handyman jobs online, then hire local workers to fulfill them. You manage, they execute.',
+    steps:['Create a Google Business profile for one service (cleaning or lawn care)','Get your first 3 jobs from Thumbtack, TaskRabbit, or Nextdoor','Hire a reliable subcontractor on Craigslist/Facebook, keep 30-40% margin'],
+    earn:'$1K–$5K/mo', time:'5–10 hrs/wk', tools:['Google Business','Thumbtack','Jobber'],
+    plan:'Week 1: Choose service, set up Google Business + Thumbtack. Week 2: Price competitively, get first 3 bookings. Week 3: Recruit 1-2 subcontractors. Week 4+: Focus on marketing and quality control. Month 3: Add second service line.',
+    checklist:['Choose service category','Set up Google Business Profile','Create Thumbtack profile','Research local pricing','Set your pricing (30-40% margin built in)','Get first 3 bookings','Find 2 reliable subcontractors','Create quality checklist','Get 5 Google reviews','Expand to second service'],
+    templateEmail:'N/A — focus on Google Business description:\n\n[BUSINESS NAME] — Professional [Service] in [City]\n\n⭐ Licensed & insured\n⭐ Same-week availability\n⭐ Satisfaction guaranteed\n⭐ Free estimates\n\nBook online or call [PHONE]. Serving [City] and surrounding areas.' },
+  { title:'Social Media Manager', desc:'Run Instagram, TikTok, or LinkedIn accounts for small businesses. Content planning, posting, and basic analytics.',
+    steps:['Build a sample 30-day content calendar for a mock brand','Pitch 5 local businesses with your sample + offer 1 week free','Use Buffer or Later to schedule posts efficiently'],
+    earn:'$500–$2K/mo per client', time:'8–12 hrs/wk', tools:['Buffer','Canva','Later'],
+    plan:'Week 1: Create sample 30-day calendar. Week 2: Build 5 sample posts in Canva. Week 3: Pitch 10 local businesses. Week 4: Deliver first free trial week. Month 2+: Convert trials to $500-1K/mo retainers. Month 3: Add second client.',
+    checklist:['Create sample content calendar','Design 10 sample posts in Canva','Set up Buffer or Later account','Research 10 local businesses to pitch','Send 5 pitch emails','Complete first free trial week','Convert trial to paid retainer','Set up analytics reporting template','Onboard second client','Create content SOP for scaling'],
+    templateEmail:'Subject: Your [PLATFORM] could be bringing in customers\n\nHi [NAME],\n\nI checked out [BUSINESS]\'s Instagram and I see a huge opportunity. With consistent posting and the right content strategy, you could be reaching [X] more potential customers per month.\n\nI\'d love to manage your social media for one free trial week. Here\'s a sample calendar I put together: [LINK]\n\nWorth a quick chat?\n\n[YOUR NAME]' },
+],
+finance: [
+  { title:'Bookkeeping for Small Businesses', desc:'Manage financial records using QuickBooks or Wave. Small businesses desperately need this and will pay monthly retainers.',
+    steps:['Complete free QuickBooks or Wave certification online','Offer free bookkeeping setup to 3 local businesses','Convert to $200–$500/mo retainers after proving value'],
+    earn:'$200–$500/mo per client', time:'5–8 hrs/wk per client', tools:['QuickBooks','Wave','Excel'],
+    plan:'Week 1-2: Complete QuickBooks certification. Week 3: Set up your own business accounting. Week 4: Offer free setup to 3 businesses via local Facebook groups. Month 2: Convert to paid retainers. Month 3+: Add clients, specialize in a niche (restaurants, contractors, etc.).',
+    checklist:['Complete QuickBooks Online certification','Set up Wave account as backup','Create service pricing sheet','Post offer in 3 local Facebook groups','Complete first free setup','Convert to paid retainer','Set up client onboarding template','Choose specialization niche','Get 3 client testimonials','Join bookkeeping professional groups'],
+    templateEmail:'Subject: Free bookkeeping setup for [BUSINESS]\n\nHi [NAME],\n\nTax season is around the corner and I\'m offering free QuickBooks setup for local businesses this month.\n\nI\'ll organize your books, categorize transactions, and get you ready for tax time — no charge for the initial setup.\n\nInterested?\n\n[YOUR NAME], Certified QuickBooks ProAdvisor' },
+  { title:'Reselling & Flipping', desc:'Buy underpriced items from thrift stores, garage sales, or clearance and resell on eBay, Poshmark, or Facebook Marketplace.',
+    steps:['Download the eBay app and scan 50 items at your local thrift store to learn pricing','Start with $50 budget — buy 5 items with 3x+ profit potential','List with good photos and detailed descriptions, ship within 24 hours'],
+    earn:'$300–$2K/mo', time:'5–15 hrs/wk', tools:['eBay','Poshmark','Facebook Marketplace'],
+    plan:'Week 1: Scout 3 thrift stores, scan 100 items with eBay app. Week 2: Buy first 10 items ($50 budget). Week 3: List everything with quality photos. Week 4: Ship sales, reinvest profits. Month 2+: Scale to $200/week inventory spend, specialize in highest-margin category.',
+    checklist:['Download eBay seller app','Visit 3 local thrift stores','Scan 50 items to learn pricing','Buy first 5 items','Take quality photos','List all items with detailed descriptions','Ship first sale within 24 hours','Track profit per item','Identify best-selling category','Reinvest profits into more inventory'],
+    templateEmail:'N/A — focus on listing optimization:\n\n[ITEM NAME] — [Brand] [Size/Specs] [Condition]\n\n✅ [Key selling point]\n✅ [Measurements/specs]\n✅ [Condition details]\n\nShips within 24 hours. 30-day returns accepted.\n\n#[Brand] #[Category] #[Keyword]' },
+  { title:'Tax Prep Assistant', desc:'Help individuals with simple tax returns during tax season. Get certified through IRS VITA program (free) or partner with a CPA.',
+    steps:['Complete IRS VITA certification (free, online)','Volunteer for one tax season to build experience','Market as affordable tax prep ($50–$150 per simple return)'],
+    earn:'$50–$150/return', time:'seasonal', tools:['IRS Free File','TurboTax','TaxAct'],
+    plan:'Month 1: Complete VITA certification. Month 2-3: Volunteer at VITA site. Tax season: Market to friends, family, local community. Charge $50-150 per return. Off-season: Study for EA certification to charge more.',
+    checklist:['Enroll in VITA training','Complete VITA certification exam','Volunteer at local VITA site','Complete 10 volunteer returns','Set up simple business presence','Market to personal network','Complete first paid return','Get testimonials','Research EA certification','Plan next tax season pricing'],
+    templateEmail:'Subject: Simple tax prep — $75 flat rate\n\nHi [NAME],\n\nTax season is here and I\'m offering affordable tax preparation for simple returns (W-2, standard deductions, basic credits).\n\n$75 flat rate — IRS-certified, fast turnaround.\n\nWant to schedule a time?\n\n[YOUR NAME], IRS VITA Certified' },
+],
+content: [
+  { title:'YouTube Faceless Channel', desc:'Create content without showing your face — use stock footage, AI voices, and simple editing. Niches like finance, history, and motivation do well.',
+    steps:['Pick one niche (AI news, scary stories, money tips, animal facts)','Batch-create 10 videos using free stock footage + CapCut + AI voiceover','Post 3x/week consistently for 90 days to hit monetization'],
+    earn:'$500–$5K/mo at scale', time:'10–15 hrs/wk', tools:['CapCut','Pexels','ElevenLabs'],
+    plan:'Week 1: Research niches, pick one. Week 2: Script 10 videos. Week 3-4: Produce and upload first 10. Month 2-3: Maintain 3x/week schedule. Month 4: Apply for monetization at 1K subs + 4K watch hours. Month 6+: Add affiliate links and sponsorships.',
+    checklist:['Research 5 faceless niches','Choose niche and create channel','Script first 5 videos','Record/generate voiceovers','Edit first video in CapCut','Upload first 3 videos','Create custom thumbnails','Set upload schedule (3x/week)','Hit 100 subscribers','Apply for monetization at 1K subs'],
+    templateEmail:'N/A — focus on video descriptions:\n\n[VIDEO TITLE]\n\n[2-3 sentence description with keywords]\n\n⏰ Timestamps:\n0:00 - Intro\n[timestamps]\n\n🔗 Resources mentioned:\n[affiliate links]\n\n📧 Business inquiries: [email]\n\n#[Niche] #[Keywords]' },
+  { title:'Newsletter Writer', desc:'Build an email list around one topic and monetize through sponsorships, affiliate links, or paid tiers. Substack makes it free to start.',
+    steps:['Pick a niche you can write about weekly (AI tools, productivity, local events)','Launch on Substack (free) and write 4 editions to build archive','Promote via Twitter/LinkedIn — cross-post teasers to grow subscribers'],
+    earn:'$200–$2K/mo', time:'5–8 hrs/wk', tools:['Substack','ConvertKit','Typeshare'],
+    plan:'Week 1: Choose niche, set up Substack. Week 2-4: Publish 4 issues. Month 2: Promote on Twitter/LinkedIn daily. Month 3: Hit 500 subs, pitch first sponsor. Month 6: Add paid tier or affiliate revenue.',
+    checklist:['Choose newsletter niche','Set up Substack','Write and publish first issue','Publish 3 more issues (weekly)','Create Twitter/LinkedIn accounts for promotion','Post daily teasers','Hit 100 subscribers','Hit 500 subscribers','Pitch first sponsor','Launch paid tier or add affiliate links'],
+    templateEmail:'N/A — focus on social promotion:\n\nI just published [ISSUE TITLE] in my newsletter.\n\nKey takeaways:\n→ [Point 1]\n→ [Point 2]\n→ [Point 3]\n\nRead free: [LINK]\n\nSubscribe for weekly [niche] insights. 🧵' },
+  { title:'Podcast Producer', desc:'Launch a podcast or produce shows for others. Low barrier to entry — just a mic and editing software.',
+    steps:['Get a $50 USB mic and record 3 test episodes','Edit in Audacity (free) or Descript, publish on Spotify via Anchor','Pitch 5 busy creators/experts who want a podcast but lack time'],
+    earn:'$300–$1.5K/mo per client', time:'8–12 hrs/wk', tools:['Descript','Anchor/Spotify','Riverside.fm'],
+    plan:'Week 1: Record 3 test episodes on your topic. Week 2: Edit and publish on Spotify/Apple. Week 3-4: Pitch 10 creators who need a producer. Month 2: Land first client. Month 3+: Systematize with templates, add clients.',
+    checklist:['Get USB microphone','Install Audacity or Descript','Record 3 test episodes','Edit and publish on Spotify via Anchor','Create podcast producer portfolio','Pitch 10 creators/experts','Complete first client project','Create editing workflow template','Get testimonial and case study','Raise rates and add second client'],
+    templateEmail:'Subject: I\'ll produce your podcast — you just show up and talk\n\nHey [NAME],\n\nYou\'ve got incredible expertise in [topic] but I bet finding time to produce a podcast is tough.\n\nI handle everything — editing, show notes, publishing, distribution. You just record.\n\nHere\'s a show I produce: [LINK]\n\nWant to chat for 10 minutes?\n\n[YOUR NAME]' },
+],
+physical: [
+  { title:'Dog Walking / Pet Sitting', desc:'Flexible, always in demand, and requires zero startup cost. Use Rover or market locally.',
+    steps:['Sign up on Rover.com and complete your profile with photos','Print 50 flyers for your neighborhood + post in local Facebook groups','Start at $15/walk to build reviews, raise to $25+ after 10 five-star ratings'],
+    earn:'$15–$35/walk', time:'flexible', tools:['Rover','Nextdoor','Google Maps'],
+    plan:'Week 1: Create Rover profile. Print neighborhood flyers. Week 2: Post in 5 local Facebook groups. Week 3-4: Complete first 10 walks. Month 2: Raise rates. Month 3: Add pet sitting for higher per-gig income.',
+    checklist:['Create Rover profile','Add photos and bio','Print 50 neighborhood flyers','Post in 5 local Facebook groups','Post on Nextdoor','Complete first walk','Get first 5-star review','Complete 10 walks','Raise rates by $5','Add pet sitting service'],
+    templateEmail:'N/A — focus on flyer text:\n\n🐕 [YOUR NAME]\'s Dog Walking\n\nReliable, insured, and your pup\'s new best friend.\n\n✅ Daily walks — $[PRICE]\n✅ Flexible scheduling\n✅ GPS-tracked routes\n✅ Photo updates every walk\n\n📱 Text/Call: [PHONE]\n⭐ 5 stars on Rover: [LINK]' },
+  { title:'Mobile Car Detailing', desc:'Wash and detail cars at customers\' homes or offices. Low startup cost, high margins, and easy to scale.',
+    steps:['Buy a basic detailing kit ($100–$200 on Amazon)','Offer 5 friends/neighbors a free wash for before/after photos','Post on Facebook Marketplace + Nextdoor, price at $75–$150 per detail'],
+    earn:'$75–$200/car', time:'flexible', tools:['Amazon supplies','Facebook Marketplace','Jobber'],
+    plan:'Week 1: Buy supplies, watch YouTube tutorials. Week 2: Detail 5 cars free for photos. Week 3: Post on all local platforms. Week 4+: Book 3-5 cars per week. Month 3: Add ceramic coating upsell.',
+    checklist:['Purchase basic detailing kit','Watch 5 tutorial videos','Detail your own car as practice','Detail 5 cars for free (friends/family)','Take before/after photos','Post on Facebook Marketplace','Post on Nextdoor','Create Google Business Profile','Book first 3 paid jobs','Add upsell services (ceramic, interior deep clean)'],
+    templateEmail:'N/A — focus on social media post:\n\n🚗✨ Mobile Car Detailing — I come to YOU\n\nInterior + Exterior Detail: $[PRICE]\n📍 Serving [City/Area]\n\nBefore & After 👇 [PHOTOS]\n\n✅ I come to your home or office\n✅ Eco-friendly products\n✅ Satisfaction guaranteed\n\nDM or text [PHONE] to book! 📱' },
+  { title:'Event Setup / Cleanup Crew', desc:'Help with party setups, wedding breakdowns, corporate events. Physical work but pays well and leads to repeat gigs.',
+    steps:['List yourself on TaskRabbit and Thumbtack under event help','Reach out to 5 local event planners offering day-of labor','Show up early, work hard, ask for referrals — this is a relationship business'],
+    earn:'$25–$50/hr', time:'weekend-heavy', tools:['TaskRabbit','Thumbtack','Google Calendar'],
+    plan:'Week 1: Create TaskRabbit + Thumbtack profiles. Week 2: Google 10 local event planners, send intro emails. Week 3-4: Complete first 3 gigs. Month 2: Build relationships, become a preferred vendor. Month 3: Hire 1-2 helpers, charge markup.',
+    checklist:['Create TaskRabbit profile','Create Thumbtack profile','Research 10 local event planners','Send intro emails to planners','Complete first gig','Get positive review','Build relationship with one planner','Complete 10 gigs','Hire first helper','Create recurring client list'],
+    templateEmail:'Subject: Reliable event setup crew available\n\nHi [PLANNER NAME],\n\nI run a small event setup and teardown crew in [City]. We handle table/chair setup, decoration, breakdown, and cleanup — so you can focus on the event itself.\n\nRates start at $[PRICE]/hour. Happy to do a trial gig at a discount.\n\nAvailable this weekend?\n\n[YOUR NAME]\n[PHONE]' },
+],
+};
+
+let selectedCat = null;
+let lastResults = [];
+
+/* ═══════════════════════════════════════
+   CHIP SELECTION
+   ═══════════════════════════════════════ */
+document.querySelectorAll('.chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    selectedCat = c.dataset.cat;
+  });
+});
+
+/* ═══════════════════════════════════════
+   GENERATE IDEAS
+   ═══════════════════════════════════════ */
+function generate() {
+  const btn = document.getElementById('genBtn');
+  const skills = document.getElementById('skillsInput').value.trim().toLowerCase();
+  const hours = parseInt(document.getElementById('hoursSelect').value);
+  const budget = parseInt(document.getElementById('budgetSelect').value);
+
+  btn.innerHTML = '<span class="spin"></span> Building your plan\u2026';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // Gather candidate pool
+    let pool = [];
+    if (selectedCat && DB[selectedCat]) {
+      pool = [...DB[selectedCat]];
+    } else {
+      Object.values(DB).forEach(arr => pool.push(...arr));
+    }
+
+    // Simple relevance scoring
+    if (skills) {
+      const words = skills.split(/[\s,]+/).filter(w => w.length > 2);
+      pool.forEach(h => {
+        h._score = 0;
+        const haystack = (h.title + ' ' + h.desc + ' ' + (h.tools||[]).join(' ')).toLowerCase();
+        words.forEach(w => { if (haystack.includes(w)) h._score += 2; });
+      });
+      pool.sort((a,b) => (b._score||0) - (a._score||0));
+    } else {
+      // Shuffle
+      pool.sort(() => Math.random() - 0.5);
+    }
+
+    // Filter by hours loosely
+    lastResults = pool.slice(0, 3);
+
+    renderFreeResults(lastResults);
+    renderProContent(lastResults);
+
+    document.getElementById('freeResults').classList.add('show');
+    document.getElementById('shareRow').classList.add('show');
+
+    btn.innerHTML = '&#9889;&ensp;Generate New Ideas';
+    btn.disabled = false;
+
+    // Scroll to results
+    document.getElementById('freeResults').scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 1400);
+}
+
+/* ═══════════════════════════════════════
+   RENDER FREE RESULTS
+   ═══════════════════════════════════════ */
+function renderFreeResults(ideas) {
+  const el = document.getElementById('freeResults');
+  el.innerHTML = ideas.map((h, i) => `
+    <div class="hustle-card">
+      <div class="hustle-num">Idea ${i+1}</div>
+      <div class="hustle-title">${h.title}</div>
+      <div class="hustle-desc">${h.desc}</div>
+      <ol class="hustle-steps">
+        ${h.steps.map((s, j) => `<li><span class="step-num">${j+1}</span><span>${s}</span></li>`).join('')}
+      </ol>
+      <div class="hustle-meta">
+        <span class="meta-tag earn">${h.earn}</span>
+        <span class="meta-tag time">${h.time}</span>
+        ${(h.tools||[]).map(t => `<span class="meta-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════
+   RENDER PRO CONTENT
+   ═══════════════════════════════════════ */
+function renderProContent(ideas) {
+  const el = document.getElementById('proContent');
+  el.innerHTML = `<div class="card-label">Full Action Plans</div>` +
+    ideas.map((h, i) => `
+      <div class="pro-block">
+        <div class="pro-block-title">${i+1}. ${h.title} \u2014 Roadmap</div>
+        <p>${h.plan}</p>
+      </div>
+      <div class="pro-block">
+        <div class="pro-block-title">Daily Checklist</div>
+        <ul class="checklist" id="cl_${i}">
+          ${(h.checklist||[]).map((c, j) => `<li><span class="chk" onclick="this.classList.toggle('done')">&#10003;</span><span>${c}</span></li>`).join('')}
+        </ul>
+      </div>
+      <div class="pro-block">
+        <div class="pro-block-title">Outreach Template</div>
+        <pre style="white-space:pre-wrap;font-family:var(--font-body);font-size:.82rem;color:var(--text-mid);line-height:1.6">${h.templateEmail||''}</pre>
+        <button class="btn btn-ghost" style="margin-top:10px;padding:8px 16px;font-size:.78rem" onclick="copyTemplate(this)">&#128203; Copy Template</button>
+      </div>
+    `).join('<div style="height:8px;border-top:1px solid var(--border);margin:14px 0"></div>');
+}
+
+function copyTemplate(btn) {
+  const pre = btn.previousElementSibling;
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.innerHTML = '&#10003; Copied!';
+    setTimeout(() => btn.innerHTML = '&#128203; Copy Template', 2000);
+  });
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM
+   ═══════════════════════════════════════ */
+function unlockPro() {
+  /*
+   * PRODUCTION: Wire Stripe or Gumroad
+   *   window.location.href = 'https://buy.stripe.com/YOUR_LINK';
+   *   OR: window.location.href = 'https://anchorwithin.gumroad.com/l/hustle-pro';
+   *   On return with ?paid=1 → localStorage.setItem('aw_hustle_pro','1');
+   */
+  const ok = confirm(
+    'Side Hustle Pro Planner \u2014 $2.99\n\n' +
+    '\u2192 Full week-by-week roadmaps\n' +
+    '\u2192 Interactive daily checklists\n' +
+    '\u2192 Outreach & resume templates\n' +
+    '\u2192 Unlimited hustle plans\n\n' +
+    'OK to simulate unlock (wire Stripe/Gumroad for production).'
+  );
+  if (!ok) return;
+  try { localStorage.setItem('aw_hustle_pro','1'); } catch(e){}
+  document.getElementById('proGate').classList.add('open');
+}
+
+(function(){
+  if (new URLSearchParams(location.search).get('paid')){
+    try{localStorage.setItem('aw_hustle_pro','1')}catch(e){}
+  }
+  try{if(localStorage.getItem('aw_hustle_pro'))document.getElementById('proGate').classList.add('open')}catch(e){}
+})();
+
+/* ═══════════════════════════════════════
+   SHARE
+   ═══════════════════════════════════════ */
+function shareIt() {
+  const url = window.location.href;
+  const text = 'Find your next side hustle with this free AI planner \u2014';
+  if (navigator.share) {
+    navigator.share({ title:'Side Hustle Planner', text, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text + ' ' + url).then(() => {
+      alert('Link copied! Share it anywhere.');
+    });
+  }
+}
+</script>
+</body>
+</html>
