@@ -727,15 +727,8 @@ function unlockPro() {
    *   OR: window.location.href = 'https://anchorwithin.gumroad.com/l/hustle-pro';
    *   On return with ?paid=1 → localStorage.setItem('aw_hustle_pro','1');
    */
-  const ok = confirm(
-    'Side Hustle Pro Planner \u2014 $2.99\n\n' +
-    '\u2192 Full week-by-week roadmaps\n' +
-    '\u2192 Interactive daily checklists\n' +
-    '\u2192 Outreach & resume templates\n' +
-    '\u2192 Unlimited hustle plans\n\n' +
-    'OK to simulate unlock (wire Stripe/Gumroad for production).'
-  );
-  if (!ok) return;
+  window.location.href = 'https://buy.stripe.com/9B614o6HceOX5obfj467S0c';
+  return;
   try { localStorage.setItem('aw_hustle_pro','1'); } catch(e){}
   document.getElementById('proGate').classList.add('open');
 }
