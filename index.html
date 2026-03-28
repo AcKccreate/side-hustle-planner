@@ -459,10 +459,10 @@ body::before{
   <!-- ═══ PREMIUM GATE ═══ -->
   <div class="gate" id="proGate">
     <div class="gate-lock">
-      <div class="gate-badge">&#9889; Pro Planner</div>
-      <h3>Full Action Plans</h3>
-      <p>Detailed week-by-week roadmap, daily checklist, tools &amp; templates, resume builder — for every hustle.</p>
-      <button class="btn btn-mint" onclick="unlockPro()">Unlock for $2.99</button>
+      <div class="gate-badge">&#9889; All Plans</div>
+      <h3>Unlock All Detailed Plans</h3>
+      <p>2 ideas shown free. Unlock all scored side hustles with week-by-week roadmaps, checklists, and templates.</p>
+      <button class="btn btn-mint" onclick="unlockPro()">All detailed plans for $0.99</button>
       <div class="pn">One-time purchase &middot; All hustles included</div>
     </div>
     <div class="gate-content" id="proContent">
@@ -472,6 +472,13 @@ body::before{
       </p>
     </div>
   </div>
+
+<div style="margin:20px 0 8px;padding:18px 16px;background:rgba(200,168,75,.09);border:1px solid rgba(200,168,75,.3);border-radius:12px;text-align:center">
+  <div style="font-size:.65rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#C8A84B;margin-bottom:8px">SAVE 75%</div>
+  <div style="font-size:1rem;font-weight:700;color:#EDE7DA;margin-bottom:6px">Get ALL 6 Tools for $4.99</div>
+  <div style="font-size:.78rem;color:#9A978F;margin-bottom:14px">Resume Optimizer &middot; Tax Calculator &middot; Resonance Generator &middot; Side Hustle Planner &middot; AI Companion &middot; Anchor Remembers</div>
+  <a href="https://buy.stripe.com/3cI7sM7Lg6ir5obef067S0r" target="_blank" rel="noopener" style="display:inline-block;padding:10px 22px;background:#C8A84B;color:#08101E;font-weight:700;font-size:.85rem;border-radius:8px;text-decoration:none;letter-spacing:.3px">Get the Bundle &rarr;</a>
+</div>
 
   <!-- ═══ SUPPORT ═══ -->
   <div class="support-area">
@@ -747,14 +754,14 @@ function unlockPro() {
    *   OR: window.location.href = 'https://anchorwithin.gumroad.com/l/hustle-pro';
    *   On return with ?paid=1 → localStorage.setItem('aw_hustle_pro','1');
    */
-  window.location.href = 'https://buy.stripe.com/9B614o6HceOX5obfj467S0c';
+  window.location.href = 'https://buy.stripe.com/5kQ00k2qWcGPg2Pfj467S0o';
   return;
   try { localStorage.setItem('aw_hustle_pro','1'); } catch(e){}
   document.getElementById('proGate').classList.add('open');
 }
 
 (function(){
-  if (new URLSearchParams(location.search).get('paid')){
+  if (new URLSearchParams(location.search).get('paid')||new URLSearchParams(location.search).get('unlocked')){
     try{localStorage.setItem('aw_hustle_pro','1')}catch(e){}
   }
   try{if(localStorage.getItem('aw_hustle_pro'))document.getElementById('proGate').classList.add('open')}catch(e){}
