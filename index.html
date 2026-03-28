@@ -369,9 +369,18 @@ body::before{
   .chips{gap:6px}
   .chip{padding:6px 12px;font-size:.78rem}
 }
+#upsellBanner{display:none;position:fixed;bottom:0;left:0;right:0;background:#1a2740;border-top:2px solid #C8A84B;padding:14px 20px;align-items:center;justify-content:center;gap:16px;z-index:9999;font-family:'Segoe UI',system-ui,sans-serif;flex-wrap:wrap}
+#upsellBanner span{color:#EDE7DA;font-size:.9rem}
+#upsellBanner a.ub-btn{background:#C8A84B;color:#08101E;font-weight:800;font-size:.9rem;padding:8px 20px;border-radius:6px;text-decoration:none;white-space:nowrap}
+#upsellBanner button.ub-x{background:none;border:none;color:#7a8fa6;cursor:pointer;font-size:1.2rem;line-height:1;padding:0 4px}
 </style>
 </head>
 <body>
+<div id="upsellBanner">
+  <span>&#10003; Unlocked! <strong>Get ALL 6 AnchorWithin tools for $4.99</strong> — one-time, no subscription.</span>
+  <a class="ub-btn" href="https://buy.stripe.com/9B66oI5D85encQDfj467S0k" target="_blank">Get the Bundle &#8594;</a>
+  <button class="ub-x" onclick="document.getElementById('upsellBanner').style.display='none'">&#10005;</button>
+</div>
 
 <div class="hdr">
   <div class="hdr-brand">AnchorWithin</div>
@@ -442,7 +451,7 @@ body::before{
       <div class="gate-badge">&#9889; Pro Planner</div>
       <h3>Full Action Plans</h3>
       <p>Detailed week-by-week roadmap, daily checklist, tools &amp; templates, resume builder — for every hustle.</p>
-      <button class="btn btn-mint" onclick="unlockPro()">Unlock for $2.99</button>
+      <button class="btn btn-mint" onclick="unlockPro()">Unlock everything for $0.99</button>
       <div class="pn">One-time purchase &middot; All hustles included</div>
     </div>
     <div class="gate-content" id="proContent">
@@ -721,23 +730,14 @@ function copyTemplate(btn) {
    PREMIUM
    ═══════════════════════════════════════ */
 function unlockPro() {
-  /*
-   * PRODUCTION: Wire Stripe or Gumroad
-   *   window.location.href = 'https://buy.stripe.com/YOUR_LINK';
-   *   OR: window.location.href = 'https://anchorwithin.gumroad.com/l/hustle-pro';
-   *   On return with ?paid=1 → localStorage.setItem('aw_hustle_pro','1');
-   */
-  window.location.href = 'https://buy.stripe.com/9B614o6HceOX5obfj467S0c';
-  return;
-  try { localStorage.setItem('aw_hustle_pro','1'); } catch(e){}
-  document.getElementById('proGate').classList.add('open');
+  window.location.href = 'https://buy.stripe.com/14A14o4z40Y703Ref067S0h';
 }
 
 (function(){
-  if (new URLSearchParams(location.search).get('paid')){
-    try{localStorage.setItem('aw_hustle_pro','1')}catch(e){}
-  }
+  const paid = new URLSearchParams(location.search).get('paid');
+  if (paid) try{localStorage.setItem('aw_hustle_pro','1')}catch(e){}
   try{if(localStorage.getItem('aw_hustle_pro'))document.getElementById('proGate').classList.add('open')}catch(e){}
+  if (paid) document.getElementById('upsellBanner').style.display='flex';
 })();
 
 /* ═══════════════════════════════════════
